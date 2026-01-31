@@ -1,0 +1,38 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Search stop",
+        "description": "Enter a search query to find nearby stops.",
+        "data": {
+          "search": "Search term"
+        },
+        "data_description": {
+          "username": "Your API username"
+        }
+      },
+      "select_stop": {
+        "title": "Search stop",
+        "description": "Select your stop from the list.",
+        "data": {
+          "selected_stop": "Select a stop"
+        },
+        "data_description": {
+          "selected_stop": "Select -- Zoek opnieuw -- to search again"
+        }
+      },
+      "filters": {
+        "title": "Apply filters",
+        "description": "Apply optional filters to narrow down the results.",
+        "data": {
+          "short_name_filter": "Filter by line number",
+          "trip_headsign_filter": "Filter by destination"
+        },
+        "data_description": {
+          "short_name_filter": "Comma separated line numbers (e.g., 1,2,3)",
+          "trip_headsign_filter": "Comma separated destinations (e.g., Haarlem,Dijkweg)"
+        }
+      }
+    }
+  }
+}

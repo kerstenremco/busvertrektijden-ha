@@ -8,7 +8,7 @@
           "search": "Search term"
         },
         "data_description": {
-          "username": "Your API username"
+          "search": "Your search term"
         }
       },
       "select_stop": {

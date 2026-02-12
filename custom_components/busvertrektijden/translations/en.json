@@ -25,12 +25,10 @@
         "title": "Apply filters",
         "description": "Apply optional filters to narrow down the results.",
         "data": {
-          "short_name_filter": "Filter by line number",
-          "trip_headsign_filter": "Filter by destination"
+          "short_name_filter": "Filter by line number"
         },
         "data_description": {
-          "short_name_filter": "Comma separated line numbers (e.g., 1,2,3)",
-          "trip_headsign_filter": "Comma separated destinations (e.g., Haarlem,Dijkweg)"
+          "short_name_filter": "Comma separated line numbers (e.g., 1,2,3)"
         }
       }
     }

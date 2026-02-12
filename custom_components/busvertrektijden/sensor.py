@@ -3,7 +3,7 @@ import voluptuous as vol
 from homeassistant.components.sensor import PLATFORM_SCHEMA
 import homeassistant.helpers.config_validation as cv
 from homeassistant.helpers.entity import Entity
-from .const import CONF_STOP_NAME, CONF_SHORT_NAME_FILTER, CONF_TRIP_HEADSIGN_FILTER
+from .const import CONF_STOP_NAME, CONF_SHORT_NAME_FILTER
 from datetime import timedelta
 from .bus import Bus
 
@@ -13,7 +13,6 @@ SCAN_INTERVAL = timedelta(minutes=1)
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Required(CONF_STOP_NAME): cv.string,
     vol.Optional(CONF_SHORT_NAME_FILTER): cv.string,
-    vol.Optional(CONF_TRIP_HEADSIGN_FILTER): cv.string,
 })
 
 
@@ -23,9 +22,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
     sensors = []
     short_name_filter = config.get(
         CONF_SHORT_NAME_FILTER) if CONF_SHORT_NAME_FILTER in config else None
-    trip_headsign_filter = config.get(
-        CONF_TRIP_HEADSIGN_FILTER) if CONF_TRIP_HEADSIGN_FILTER in config else None
-    bus = Bus(config[CONF_STOP_NAME], short_name_filter, trip_headsign_filter)
+    bus = Bus(config[CONF_STOP_NAME], short_name_filter)
     sensors.append(StopSensor(bus))
     async_add_entities(sensors, update_before_add=True)
 
@@ -68,7 +65,7 @@ class StopSensor(Entity):
         # Fetch new state data for the sensor
         try:
             stops = await self._bus.get_next_buses()
-            self._state = stops[0]['tripUpdate']['minutesUntill'] if stops else 0
+            self._state = stops[0]['computed']['seconds'] if stops else 0
             self._stops = stops
             self._available = True
         except Exception as e:

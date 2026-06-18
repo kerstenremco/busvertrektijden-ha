@@ -65,7 +65,7 @@ class StopSensor(Entity):
         # Fetch new state data for the sensor
         try:
             stops = await self._bus.get_next_buses()
-            self._state = stops[0]['computed']['seconds'] if stops else 0
+            self._state = stops[0]['seconds'] if stops else 0
             self._stops = stops
             self._available = True
         except Exception as e:

@@ -32,12 +32,13 @@ class StopSensor(Entity):
         super().__init__()
         self._bus = bus
         self._state = 0
+        self._alerts = []
         self._stops = []
         self._available = True
 
     @property
     def name(self):
-        return f"Bus Stop {self._bus.stop_name}"
+        return f"Bushalte {self._bus.stop_name}"
 
     @property
     def unique_id(self):
@@ -58,14 +59,18 @@ class StopSensor(Entity):
     @property
     def extra_state_attributes(self):
         return {
+            "alerts": self._alerts,
             "stops": self._stops
         }
 
     async def async_update(self):
         # Fetch new state data for the sensor
         try:
-            stops = await self._bus.get_next_buses()
+            data = await self._bus.fetch()
+            alerts = data['alerts']
+            stops = data['stops']
             self._state = stops[0]['seconds'] if stops else 0
+            self._alerts = alerts
             self._stops = stops
             self._available = True
         except Exception as e:

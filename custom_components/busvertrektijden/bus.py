@@ -46,13 +46,16 @@ class Bus:
         self.stop_name = stop_name
         self.short_name_filter = short_name_filter
 
-    async def get_next_buses(self):
+    async def fetch(self):
+        result = {"alerts": [], "stops": []}
         async with aiohttp.ClientSession() as session:
             url = f"{API_URL}/stop/{self.stop_name.lower()}?"
             if self.short_name_filter:
                 url += f"filternumbers={self.short_name_filter}"
             async with session.get(url) as response:
                 data = await response.json()
+                stopAlerts = list(data['result']['stop_alerts'])
                 stopTimes = list(data['result']['stop_times'])[:10]
-                buses = [BusStop.from_api_response(stop_time).__dict__ for stop_time in stopTimes]
-                return buses
+                result['alerts'] = [stopAlert['header'] for stopAlert in stopAlerts]
+                result['stops'] = [BusStop.from_api_response(stop_time).__dict__ for stop_time in stopTimes]
+                return result
